@@ -134,63 +134,66 @@ const App: React.FC = props => {
                     <div className="year-wrapper">
                         <h2>{year.year}</h2>
                     </div>
-                    {year.seasons.map(season => {
-                        let lastTier: TIER = 3
-                        let lastTierCount = 0
-                        return (
-                            <div
-                                key={season.name}
-                                className={`section-season season-${season.name.toLowerCase()}`}
-                            >
-                                {season.entries.map(entry => {
-                                    let tier: TIER = entry.score >= 9 ? 3 : entry.score >= 8 ? 2 : 1
-                                    if (season.entries.length <= 2 && tier === 2) {
-                                        tier = 1
-                                    }
-                                    if (
-                                        lastTier !== tier &&
-                                        lastTierCount % tierToCount(lastTier)
-                                    ) {
-                                        tier = lastTier
-                                    }
-                                    // 最後のtier更新
-                                    if (lastTier === tier) {
-                                        lastTierCount++
-                                    } else {
-                                        lastTier = tier
-                                        lastTierCount = 1
-                                    }
-                                    return (
-                                        <a
-                                            key={entry.id}
-                                            target="_blank"
-                                            href={`https://anilist.co/anime/${entry.id}`}
-                                            title={`${entry.title!.native!}${
-                                                entry.scoreOrig == null
-                                                    ? ""
-                                                    : ` (${entry.scoreOrig})`
-                                            }`}
-                                            style={
-                                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                                                {
+                    <div className="seasons">
+                        {year.seasons.map(season => {
+                            let lastTier: TIER = 3
+                            let lastTierCount = 0
+                            return (
+                                <div
+                                    key={season.name}
+                                    className={`section-season season-${season.name.toLowerCase()}`}
+                                >
+                                    {season.entries.map(entry => {
+                                        let tier: TIER =
+                                            entry.score >= 9 ? 3 : entry.score >= 8 ? 2 : 1
+                                        if (season.entries.length <= 2 && tier === 2) {
+                                            tier = 1
+                                        }
+                                        if (
+                                            lastTier !== tier &&
+                                            lastTierCount % tierToCount(lastTier)
+                                        ) {
+                                            tier = lastTier
+                                        }
+                                        // 最後のtier更新
+                                        if (lastTier === tier) {
+                                            lastTierCount++
+                                        } else {
+                                            lastTier = tier
+                                            lastTierCount = 1
+                                        }
+                                        return (
+                                            <a
+                                                key={entry.id}
+                                                target="_blank"
+                                                href={`https://anilist.co/anime/${entry.id}`}
+                                                title={`${entry.title!.native!}${
+                                                    entry.scoreOrig == null
+                                                        ? ""
+                                                        : ` (${entry.scoreOrig})`
+                                                }`}
+                                                style={
                                                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                                                    "--tier": tierToCss(tier).toString(),
-                                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                                } as any
-                                            }
-                                            rel="noreferrer"
-                                        >
-                                            <CoolThumbnail
-                                                className="cover-image"
-                                                src={entry.coverImage!.extraLarge!}
-                                                lazy
-                                            />
-                                        </a>
-                                    )
-                                })}
-                            </div>
-                        )
-                    })}
+                                                    {
+                                                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                                                        "--tier": tierToCss(tier).toString(),
+                                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                                    } as any
+                                                }
+                                                rel="noreferrer"
+                                            >
+                                                <CoolThumbnail
+                                                    className="cover-image"
+                                                    src={entry.coverImage!.extraLarge!}
+                                                    lazy
+                                                />
+                                            </a>
+                                        )
+                                    })}
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
             ))}
         </div>
@@ -218,6 +221,8 @@ app.id = "app"
 document.body.appendChild(app)
 createRoot(app).render(<RouterProvider router={router} />)
 
+/*
 window.addEventListener("resize", () => {
     app.style.setProperty("--vh", `${window.innerHeight}px`)
 })
+*/
